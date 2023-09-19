@@ -13,7 +13,15 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
   bucket = aws_s3_bucket.insecure-bucket.id
   versioning_configuration {
     status = "Enabled"
+    mfa_delete = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_logging" "example" {
+  bucket = aws_s3_bucket.insecure-bucket.id
+
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = "log/"
 }
 
 resource "aws_ebs_volume" "example" {

@@ -1,7 +1,5 @@
 resource "aws_s3_bucket" "insecure-bucket" {
   bucket = "insecure-bucket"
-  versioning.enabled = true
-  versioning.mfa_delete = true
 }
 
  resource "aws_s3_bucket_public_access_block" "insecure-bucket" {
@@ -10,6 +8,13 @@ resource "aws_s3_bucket" "insecure-bucket" {
    ignore_public_acls      = true
    restrict_public_buckets = true
  }
+
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.insecure-bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
 
 resource "aws_ebs_volume" "example" {
   availability_zone = "us-east-1a"
